@@ -1,0 +1,174 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v1
+servers:
+- url: http://localhost:8080
+paths:
+  /api/v1/persons:
+    get:
+      tags:
+      - Person REST API operations
+      summary: Get all Persons
+      operationId: listPersons
+      responses:
+        "200":
+          description: All Persons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonResponse'
+    post:
+      tags:
+      - Person REST API operations
+      summary: Create new Person
+      operationId: createPerson
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonRequest'
+        required: true
+      responses:
+        "201":
+          description: Created new Person
+          headers:
+            Location:
+              description: Path to new Person
+              style: simple
+              schema:
+                type: string
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+  /api/v1/persons/{id}:
+    get:
+      tags:
+      - Person REST API operations
+      summary: Get Person by ID
+      operationId: getPerson
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Person for ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonResponse'
+        "404":
+          description: Not found Person for ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+      - Person REST API operations
+      summary: Remove Person by ID
+      operationId: editPerson_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "204":
+          description: Person for ID was removed
+    patch:
+      tags:
+      - Person REST API operations
+      summary: Update Person by ID
+      operationId: editPerson
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonRequest'
+        required: true
+      responses:
+        "200":
+          description: Person for ID was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonResponse'
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        "404":
+          description: Not found Person for ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ValidationErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: string
+    PersonRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+          format: int32
+        address:
+          type: string
+        work:
+          type: string
+    PersonResponse:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        age:
+          type: integer
+          format: int32
+        address:
+          type: string
+        work:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
