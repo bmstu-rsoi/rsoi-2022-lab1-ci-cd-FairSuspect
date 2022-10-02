@@ -109,11 +109,8 @@ func (s *APIServer) handlePersons() http.HandlerFunc {
 				return
 			}
 			w.WriteHeader(http.StatusCreated)
-			parsed, err := json.Marshal(person)
-			if err != nil {
-				io.WriteString(w, "Failed to evaulate model \n"+err.Error())
-			}
-			io.WriteString(w, "Created \n"+string(parsed))
+
+			w.Header().Add("Location", fmt.Sprintf("/api/v1/persons/%d", person.ID))
 			break
 		default:
 			refuseMethod(w)
