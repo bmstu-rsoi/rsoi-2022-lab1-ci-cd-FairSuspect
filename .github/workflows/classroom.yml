@@ -32,6 +32,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "cleint-rsoi" #Must be unique in Heroku
           heroku_email: "velik.kir+heroku@gmail.com"
+          usedocker: true
 
       - name: Run API Tests
         uses: matt-ball/newman-action@master
