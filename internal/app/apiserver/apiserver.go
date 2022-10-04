@@ -59,9 +59,9 @@ func (s *APIServer) configureLogger() error {
 
 func (s *APIServer) configureRouter() {
 
-	s.router.HandleFunc("/error", s.handleForbidden())
-	s.router.HandleFunc("/persons", s.handlePersons())
-	s.router.HandleFunc("/persons/{id:[0-9]+}", s.handlePersonsId())
+	s.router.HandleFunc("/api/v1/error", s.handleForbidden())
+	s.router.HandleFunc("/api/v1/persons", s.handlePersons())
+	s.router.HandleFunc("/api/v1/persons/{id:[0-9]+}", s.handlePersonsId())
 
 }
 
@@ -97,20 +97,26 @@ func (s *APIServer) handlePersons() http.HandlerFunc {
 
 			// Try to decode the request body into the struct. If there is an error,
 			// respond to the client with the error message and a 400 status code.
+			if r.Body == nil {
+				http.Error(w, "Empty body", http.StatusBadRequest)
+				return
+			}
 			err := json.NewDecoder(r.Body).Decode(&p)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				io.WriteString(w, "Failed to parse model: "+err.Error())
 				return
 			}
+			print(p.Name)
 			person, err := s.store.Person().Create(p)
 			if err != nil {
 				io.WriteString(w, "Failed to create model \n"+err.Error())
 				return
 			}
+			print(person.ID)
+			w.Header().Add("Location", fmt.Sprintf("/api/v1/persons/%d", person.ID))
 			w.WriteHeader(http.StatusCreated)
 
-			w.Header().Add("Location", fmt.Sprintf("/api/v1/persons/%d", person.ID))
 			break
 		default:
 			refuseMethod(w)
