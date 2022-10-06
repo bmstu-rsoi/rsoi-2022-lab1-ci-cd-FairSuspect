@@ -20,7 +20,6 @@ jobs:
           go-version: 1.19.1
       - name: Enable modules
         run: export GO111MODULE=on
-      - run: ls src
       
       - name: Build
         run: cd src &&  go build -v ./main.go
@@ -31,8 +30,8 @@ jobs:
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "cleint-rsoi" #Must be unique in Heroku
-          heroku_email: "velik.kir+heroku@gmail.com"
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
 
       - name: Run API Tests
