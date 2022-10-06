@@ -23,7 +23,7 @@ jobs:
       - run: ls src
       
       - name: Build
-        run: go build -v ./src/main.go
+        run: cd src &&  go build -v ./main.go
 
       # - name: Test
       #   run: go test -v ./...
