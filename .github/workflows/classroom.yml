@@ -35,7 +35,7 @@ jobs:
           heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           branch: master
-          usedocker: true
+          # usedocker: true
 
       - name: Run API Tests
         uses: matt-ball/newman-action@master
