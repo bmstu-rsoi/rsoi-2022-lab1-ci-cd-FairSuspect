@@ -9,13 +9,15 @@ type PersonRepository struct {
 	store *Store
 }
 
-func (r *PersonRepository) Create(p *model.Person) (*model.Person, error) {
-	res, err := r.store.db.Query("INSERT INTO Persons (Name, Address, Work, Age) VALUES ($1, $2, $3, $4)", p.Name, p.Address, p.Work, p.Age)
+func (r *PersonRepository) Create(p *model.Person) (int, error) {
+	id := -1
+	err := r.store.db.QueryRow("INSERT INTO Persons (Name, Address, Work, Age) VALUES ($1, $2, $3, $4) RETURNING ID", p.Name, p.Address, p.Work, p.Age).Scan(&id)
 	if err != nil {
-		return nil, err
+		return -1, err
 	}
-	log.Default().Print(res)
-	return p, nil
+
+	log.Default().Println(id)
+	return id, nil
 }
 func (r *PersonRepository) GetAll() ([]*model.Person, error) {
 	persons := []*model.Person{}

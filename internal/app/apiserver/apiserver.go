@@ -108,13 +108,13 @@ func (s *APIServer) handlePersons() http.HandlerFunc {
 				return
 			}
 			print(p.Name)
-			person, err := s.store.Person().Create(p)
+			id, err := s.store.Person().Create(p)
 			if err != nil {
 				io.WriteString(w, "Failed to create model \n"+err.Error())
 				return
 			}
-			print(person.ID)
-			w.Header().Add("Location", fmt.Sprintf("/api/v1/persons/%d", person.ID))
+			print(id)
+			w.Header().Add("Location", fmt.Sprintf("/api/v1/persons/%d", id))
 			w.WriteHeader(http.StatusCreated)
 
 			break
