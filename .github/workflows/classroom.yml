@@ -21,6 +21,7 @@ jobs:
       - name: Enable modules
         run: export GO111MODULE=on
       - run: cd src
+      - run: ls
       - run: go mod verify
       - name: Build
         run: go build -v ./main.go
