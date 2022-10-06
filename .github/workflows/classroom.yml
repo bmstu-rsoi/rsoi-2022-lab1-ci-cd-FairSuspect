@@ -20,11 +20,10 @@ jobs:
           go-version: 1.19.1
       - name: Enable modules
         run: export GO111MODULE=on
-      - run: cd src
       - run: ls
-      - run: go get -d ./...
+      - run: go get -d ./src/...
       - name: Build
-        run: go build -v ./main.go
+        run: go build -v ./src/main.go
 
       # - name: Test
       #   run: go test -v ./...
