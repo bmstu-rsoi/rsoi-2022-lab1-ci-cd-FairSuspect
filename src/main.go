@@ -22,6 +22,7 @@ func main() {
 	flag.Parse()
 
 	config := apiserver.NewConfig()
+	log.Default().Println("Port: " + config.BindAddr)
 	_, err := toml.DecodeFile(configPath, config)
 	if err != nil {
 		log.Fatal(err)
@@ -35,4 +36,5 @@ func main() {
 	if err := s.Start(); err != nil {
 		log.Fatal(err)
 	}
+
 }

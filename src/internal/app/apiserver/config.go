@@ -1,6 +1,9 @@
 package apiserver
 
-import "http-rest-api/store"
+import (
+	"http-rest-api/store"
+	"os"
+)
 
 // Config ...
 type Config struct {
@@ -10,8 +13,12 @@ type Config struct {
 }
 
 func NewConfig() *Config {
+	port := os.Getenv("PORT")
+	if len(port) == 0 {
+		port = "8080"
+	}
 	return &Config{
-		BindAddr: ":8080",
+		BindAddr: ":" + port,
 		LogLevel: "debug",
 		Store:    store.NewConfig(),
 	}
