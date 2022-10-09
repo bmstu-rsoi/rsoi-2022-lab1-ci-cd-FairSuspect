@@ -2,6 +2,7 @@ package store
 
 import (
 	"database/sql"
+	"os"
 
 	_ "github.com/lib/pq" // ..
 )
@@ -20,8 +21,12 @@ func New(config *Config) *Store {
 
 // Open ...
 func (s *Store) Open() error {
-	str := "host=localhost dbname=persons user=program password=test port=5432 sslmode=disable"
-	print("Conntecting to db with", str, "...\n")
+	dbURL := os.Getenv("DATABASE_URL")
+	if len(dbURL) == 0 {
+		dbURL = "localhost"
+	}
+	str := "host=" + dbURL + " dbname=das14gjflui68t user=winvrbuiddepcg password=740bc8cca39275cb85058dbdebb0777c2f223674ee57ed151e5fe62b1f0798b6 port=5432 sslmode=disable"
+	print("Conntecting to db with ", str, "...\n")
 	db, err := sql.Open("postgres", str)
 
 	if err != nil {
@@ -33,7 +38,7 @@ func (s *Store) Open() error {
 	}
 
 	s.db = db
-
+	defer db.Close()
 	return nil
 
 }
