@@ -157,7 +157,7 @@ func (s *APIServer) handlePersonsId() http.HandlerFunc {
 				http.Error(w, err.Error(), http.StatusNotFound)
 				return
 			}
-			w.WriteHeader(http.StatusOK)
+			w.WriteHeader(http.StatusNoContent)
 
 			break
 
@@ -172,6 +172,7 @@ func (s *APIServer) handlePersonsId() http.HandlerFunc {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
+			p.ID = id
 			person, err := s.store.Person().Patch(p)
 			if err != nil {
 				http.Error(w, err.Error(), 500)
