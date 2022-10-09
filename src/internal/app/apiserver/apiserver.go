@@ -172,7 +172,7 @@ func (s *APIServer) handlePersonsId() http.HandlerFunc {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
-			p.ID = id
+			p.Id = id
 			person, err := s.store.Person().Patch(p)
 			if err != nil {
 				http.Error(w, err.Error(), 500)
