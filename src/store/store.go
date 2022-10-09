@@ -25,7 +25,7 @@ func (s *Store) Open() error {
 	if len(dbURL) == 0 {
 		dbURL = "localhost"
 	}
-	str := "host=" + dbURL + " dbname=das14gjflui68t user=winvrbuiddepcg password=740bc8cca39275cb85058dbdebb0777c2f223674ee57ed151e5fe62b1f0798b6 port=5432 sslmode=disable"
+	str := "host=ec2-54-75-184-144.eu-west-1.compute.amazonaws.com dbname=das14gjflui68t user=winvrbuiddepcg password=740bc8cca39275cb85058dbdebb0777c2f223674ee57ed151e5fe62b1f0798b6 port=5432 sslmode=disable"
 	print("Conntecting to db with ", str, "...\n")
 	db, err := sql.Open("postgres", str)
 
