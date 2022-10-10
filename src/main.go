@@ -22,14 +22,12 @@ func main() {
 	flag.Parse()
 
 	config := apiserver.NewConfig()
-	log.Default().Println("Port: " + config.BindAddr)
 	_, err := toml.DecodeFile(configPath, config)
 	if err != nil {
 		log.Fatal(err)
 	}
 	storeConfig := store.NewConfig()
 	st := store.New(storeConfig)
-	st.Open()
 	repo = *st.Person()
 
 	s := apiserver.New(config)
