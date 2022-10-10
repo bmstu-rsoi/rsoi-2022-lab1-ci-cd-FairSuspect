@@ -15,19 +15,28 @@ var (
 )
 
 func init() {
-	flag.StringVar(&configPath, "config-path", "configs/apiserver.toml", "path to config file")
+	log.Default().Println(flag.Args())
+	// if len(os.Args) == 2 {
+
+	flag.StringVar(&configPath, "config", "configs/apiserver.toml", "path to config file")
+	// }
+	log.Default().Println("Config path: " + configPath)
 }
 
 func main() {
-	flag.Parse()
 
+	flag.Parse()
+	configFlag := flag.Lookup("config")
 	config := apiserver.NewConfig()
-	_, err := toml.DecodeFile(configPath, config)
-	if err != nil {
-		log.Fatal(err)
+	log.Default().Println(configFlag)
+	if configFlag != nil {
+		_, err := toml.DecodeFile(configPath, config)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
-	storeConfig := store.NewConfig()
-	st := store.New(storeConfig)
+
+	st := store.New(config.Store)
 	repo = *st.Person()
 
 	s := apiserver.New(config)

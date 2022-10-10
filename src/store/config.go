@@ -1,10 +1,19 @@
 package store
 
+import "os"
+
 // Config ...
 type Config struct {
-	DatabaseURL string "host=localhost:5432 dbname=persons user=program password=test"
+	DatabaseURL string
 }
 
 func NewConfig() *Config {
-	return &Config{}
+	dsn := os.Getenv("DATABASE_URL")
+	if len(dsn) == 0 {
+		dsn = "host=localhost dbname=persons user=program password=test port=5432 sslmode=disable"
+
+	}
+	return &Config{
+		DatabaseURL: dsn,
+	}
 }

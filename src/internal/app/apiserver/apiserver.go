@@ -107,13 +107,11 @@ func (s *APIServer) handlePersons() http.HandlerFunc {
 				io.WriteString(w, "Failed to parse model: "+err.Error())
 				return
 			}
-			print(p.Name)
 			id, err := s.store.Person().Create(p)
 			if err != nil {
 				io.WriteString(w, "Failed to create model \n"+err.Error())
 				return
 			}
-			print(id)
 			w.Header().Add("Location", fmt.Sprintf("/api/v1/persons/%d", id))
 			w.WriteHeader(http.StatusCreated)
 
